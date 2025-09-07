@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Queen 👑</title>
+<style>
+/* ===== Global Styles ===== */
+body {
+  margin:0; padding:0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(120deg,#ffe6f0,#ffcccc);
+  overflow-x: hidden;
+}
+
+/* ===== Balloon Background ===== */
+.balloon {
+  position:absolute;
+  border-radius:50%;
+  opacity:0.9;
+  animation: floatBalloon linear infinite;
+  cursor:pointer;
+  box-shadow: 0 0 20px rgba(255,255,255,0.7), 0 0 40px rgba(255,192,203,0.5);
+}
+@keyframes floatBalloon {
+  0% { transform: translateY(100vh) rotate(0deg); }
+  50% { transform: translateY(50vh) rotate(15deg); }
+  100% { transform: translateY(-20vh) rotate(-10deg); }
+}
+
+/* ===== Sections ===== */
+section {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  color:#333;
+}
+
+h1,h2 {margin:10px;}
+p {margin:8px; font-size:1.2rem;}
+
+/* ===== Section Images ===== */
+.section-img {
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin-bottom:15px;
+  object-fit:cover;
+  border:3px solid pink;
+  box-shadow:0 0 20px rgba(255,192,203,0.7);
+}
+
+/* ===== Next & Music Buttons ===== */
+.next-button {
+  margin-top:20px;
+  padding:12px 25px;
+  border-radius:25px;
+  font-size:18px;
+  background: linear-gradient(45deg,#ff66cc,#ff99cc);
+  color:white;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 0 15px pink;
+  transition:0.3s all;
+}
+.next-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px #ff66cc, 0 0 50px #ff99cc;
+}
+
+/* ===== QnA Button ===== */
+.qna-button {
+  margin: 10px;
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-size: 18px;
+  background: linear-gradient(45deg,#ff66cc,#ff99cc);
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 15px pink;
+  transition: 0.3s all;
+  opacity:1 !important;
+  transform:none !important;
+  position: relative;
+  z-index:10;
+}
+.qna-button:hover {
+  transform: scale(1.1);
+  box-shadow:0 0 30px #ff66cc,0 0 50px #ff99cc;
+}
+
+/* ===== Memories Carousel (Photos + GIFs) ===== */
+.memories-container {
+  display:flex;
+  overflow:hidden;
+  width:90%;
+  max-width:400px;
+  margin:20px auto;
+}
+.memory-slide {
+  min-width:100%;
+  transition:0.5s;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.memory-slide img {
+  width:100px; height:100px;
+  margin:5px;
+  border-radius:15px;
+  box-shadow:0 0 15px pink;
+  object-fit:cover;
+  transition: transform 0.5s;
+}
+.memory-slide img:hover {
+  transform: rotate(5deg) scale(1.1);
+}
+
+/* ===== Our Photos Circular Carousel ===== */
+.frames-circle {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 30px auto;
+}
+.frame-photo {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 15px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 20px pink;
+  transition: transform 0.3s;
+}
+.frame-photo:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px #ff66cc,0 0 50px #ff99cc;
+}
+
+/* ===== Love Quiz Hearts & Confetti ===== */
+.heart, .confetti {
+  position:absolute;
+  font-size:24px;
+  animation: floatUpHeart 1.5s ease-out forwards;
+  pointer-events:none;
+}
+.confetti {
+  font-size:20px;
+  animation: floatConfetti 2s ease-out forwards;
+}
+@keyframes floatUpHeart {
+  0% {opacity:1; transform:translateY(0);}
+  100% {opacity:0; transform:translateY(-100px) scale(1.5);}
+}
+@keyframes floatConfetti {
+  0% {opacity:1; transform:translateY(0) rotate(0deg);}
+  100% {opacity:0; transform:translateY(-150px) rotate(360deg);}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Background Music ===== -->
+<audio id="bg-music" autoplay loop>
+  <source src="music/mp3 audio.mp3" type="audio/mp3">
+</audio>
+<button class="next-button" style="position:fixed; top:20px; right:20px; z-index:50;" onclick="toggleMusic()">🎵 Music On/Off</button>
+
+<!-- ===== Balloon Container ===== -->
+<div id="balloons"></div>
+
+<!-- ===== Intro Section ===== -->
+<section id="intro">
+  <img src="photos/img.2.png" alt="Kripa" class="section-img">
+  <h1>Something Special for You 💌</h1>
+  <button class="next-button" onclick="showSection('queen')">Next ➝</button>
+</section>
+
+<!-- ===== Queen Section ===== -->
+<section id="queen" style="display:none;">
+  <img src="photos/img.1.png" alt="Kripa Queen" class="section-img">
+  <h1>You are Queen of my World 👑</h1>
+  <p>Your smile makes me happy all day 💕</p>
+  <p>You are my life, my Kripa 🌸</p>
+  <button class="next-button" onclick="showSection('qna')">Next ➝</button>
+</section>
+
+<!-- ===== QnA Section ===== -->
+<section id="qna" style="display:none;">
+  <img src="photos/Snapchat-1723588462.jpg" alt="Kripa QnA" class="section-img">
+  <h2>Answer this QnA 💌</h2>
+  <p>Who is my forever love?</p>
+  <button class="qna-button" onclick="showAnswer('q1')">Click Me ❤️</button>
+  <p id="q1"></p>
+  <button class="next-button" onclick="showSection('countdown')">Next ➝</button>
+</section>
+
+<!-- ===== Countdown Section ===== -->
+<section id="countdown" style="display:none;">
+  <img src="photos/img.2.png" alt="Kripa Birthday" class="section-img">
+  <h2>Countdown to Your Birthday 🎉</h2>
+  <p id="countdown-text"></p>
+  <button class="next-button" onclick="showSection('memories')">Next ➝</button>
+</section>
+
+<!-- ===== Combined Memories Carousel ===== -->
+<section id="memories" style="display:none;">
+  <h2>Our Memories 💖</h2>
+  <div class="memories-container">
+    <div class="memory-slide">
+      <img src="photos/img.1.png">
+      <img src="photos/img.2.png">
+      <img src="photos/img.11.jpg">
+      <img src="photos/img.10.jpg">
+    </div>
+    <div class="memory-slide">
+      <img src="photos/img.15.jpg">
+      <img src="photos/img.17.jpg">
+      <img src="photos/Snapchat-1403173118.jpg">
+      <img src="photos/img.2.png">
+    </div>
+  </div>
+  <button class="next-button" onclick="showSection('frames')">Next ➝</button>
+</section>
+
+<!-- ===== Our Photos Circular Carousel ===== -->
+<section id="frames" style="display:none;">
+  <h2>Our Photos 🌸</h2>
+  <div class="frames-circle">
+    <div class="frame-photo" style="background-image:url('photos/img.1.png')"></div>
+    <div class="frame-photo" style="background-image:url('photos/img.2.png')"></div>
+    <div class="frame-photo" style="background-image:url('photos/img.14.jpg')"></div>
+    <div class="frame-photo" style="background-image:url('photos/img.16.jpg')"></div>
+    <div class="frame-photo" style="background-image:url('photos/Snapchat-1403173118.jpg')"></div>
+    <div class="frame-photo" style="background-image:url('photos/Snapchat-1723588462.jpg')"></div>
+    <div class="frame-photo" style="background-image:url('photos/img.7.jpg')"></div>
+    <div class="frame-photo" style="background-image:url('photos/img.8.jpg')"></div>
+    <div class="frame-photo" style="background-image:url('photos/img.8.jpg')"></div>
+    <div class="frame-photo" style="background-image:url('photos/Snapchat-1403173118.jpg')"></div>
+  </div>
+  <button class="next-button" onclick="showSection('love-game-final')">Next ➝</button>
+</section>
+
+<!-- ===== Love Quiz Game Section ===== -->
+<section id="love-game-final" style="display:none;">
+  <h2>Love Quiz Game ❤️</h2>
+  <p>Answer these fun questions about us!</p>
+
+  <div class="quiz-question">
+    <p>Who makes me happiest every day?</p>
+    <button class="qna-button" onclick="checkAnswer(this,true)">Kripa 💖</button>
+    <button class="qna-button" onclick="checkAnswer(this,false)">Someone else 😅</button>
+  </div>
+
+  <div class="quiz-question">
+    <p>Who is my forever Pookie?</p>
+    <button class="qna-button" onclick="checkAnswer(this,true)">Kripa 💖</button>
+    <button class="qna-button" onclick="checkAnswer(this,false)">No one 😢</button>
+  </div>
+
+  <p id="game-message"></p>
+  <div id="hearts-container"></div>
+</section>
+
+<script>
+// ===== Glowing Balloons =====
+const balloonContainer=document.getElementById('balloons');
+const colors=['#ff66cc','#ff99cc','#ffccff','#ffb3e6','#ff99ff','#ff66ff'];
+for(let i=0;i<30;i++){
+  const balloon=document.createElement('div');
+  balloon.className='balloon';
+  const size=20+Math.random()*30;
+  balloon.style.width=size+'px';
+  balloon.style.height=size*1.2+'px';
+  balloon.style.left=Math.random()*100+'vw';
+  balloon.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+  balloon.style.animationDuration=(8+Math.random()*8)+'s';
+  balloon.style.boxShadow=`0 0 ${10+Math.random()*20}px ${colors[Math.floor(Math.random()*colors.length)]}`;
+  balloon.addEventListener('click',()=>{
+    const heart=document.createElement('div');
+    heart.className='heart';
+    heart.style.left=balloon.offsetLeft+'px';
+    heart.style.top=balloon.offsetTop+'px';
+    heart.innerText='❤️';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),1500);
+  });
+  balloonContainer.appendChild(balloon);
+}
+
+// ===== Show Sections =====
+function showSection(id){
+  document.querySelectorAll('section').forEach(s=>s.style.display='none');
+  document.getElementById(id).style.display='flex';
+}
+
+// ===== QnA Answer =====
+function showAnswer(q){
+  if(q==='q1') document.getElementById(q).innerText="YOU, my love ❤️";
+}
+
+// ===== Countdown =====
+const countdownEl=document.getElementById('countdown-text');
+const targetDate=new Date("2062-11-10T00:00:00").getTime();
+setInterval(()=>{
+  const now=new Date().getTime();
+  const diff=targetDate-now;
+  const days=Math.floor(diff/(1000*60*60*24));
+  const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+  const minutes=Math.floor((diff%(1000*60*60))/(1000*60));
+  const seconds=Math.floor((diff%(1000*60))/1000);
+  countdownEl.innerText=`${days}d ${hours}h ${minutes}m ${seconds}s left 💖`;
+},1000);
+
+// ===== Memories Carousel =====
+let currentMemoryIndex=0;
+const memorySlides=document.querySelectorAll('.memory-slide');
+function showMemory(index){
+  if(index<0) index=memorySlides.length-1;
+  if(index>=memorySlides.length) index=0;
+  currentMemoryIndex=index;
+  memorySlides.forEach((slide,i)=>{
+    slide.style.transform=`translateX(-${currentMemoryIndex*100}%)`;
+  });
+}
+setInterval(()=>showMemory(currentMemoryIndex+1),5000);
+
+// ===== Frames Circular Rotation =====
+const framePhotos=document.querySelectorAll('.frame-photo');
+let angle=0;
+const total=framePhotos.length;
+const radius=120;
+function rotateFrames(){
+  framePhotos.forEach((photo,i)=>{
+    const step=(2*Math.PI)/total;
+    const x=radius*Math.cos(step*i+angle);
+    const y=radius*Math.sin(step*i+angle);
+    photo.style.transform=`translate(${x}px, ${y}px)`;
+  });
+  angle+=0.01;
+  requestAnimationFrame(rotateFrames);
+}
+rotateFrames();
+
+// ===== Love Quiz Game =====
+function checkAnswer(button,isCorrect){
+  const message=document.getElementById('game-message');
+  if(isCorrect){
+    message.innerText="Yay! Correct 💖 I love you!";
+    createHearts();
+    createConfetti();
+  } else{
+    message.innerText="Oops! Try again 😘";
+  }
+}
+function createHearts(){
+  const container=document.getElementById('hearts-container');
+  for(let i=0;i<10;i++){
+    const heart=document.createElement('div');
+    heart.className='heart';
+    heart.style.left=Math.random()*80+'%';
+    heart.style.top=Math.random()*50+'%';
+    heart.innerText='❤️';
+    container.appendChild(heart);
+    setTimeout(()=>heart.remove(),1500);
+  }
+}
+function createConfetti(){
+  for(let i=0;i<20;i++){
+    const conf=document.createElement('div');
+    conf.className='confetti';
+    conf.style.left=Math.random()*100+'%';
+    conf.style.top=Math.random()*80+'%';
+    conf.innerText='✨';
+    document.body.appendChild(conf);
+    setTimeout(()=>conf.remove(),2000);
+  }
+}
+
+// ===== Toggle Music =====
+function toggleMusic(){
+  const music=document.getElementById('bg-music');
+  if(music.paused) music.play();
+  else music.pause();
+}
+</script>
+</body>
+</html>
